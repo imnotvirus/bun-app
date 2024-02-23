@@ -23,28 +23,29 @@ model Flight {
   @@map("flights")
 }
 
-model Passenger {
+model User {
   id        String   @id @default(uuid())
   name      String
-  email     String
+  email     String  @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   bookings Booking[]
 
-  @@map("passengers")
+  @@map("users")
 }
 
 model Booking {
-  id          String   @id @default(uuid())
-  flightId    String
-  passengerId String
-  seatNumber  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String   @id @default(uuid())
+  flightId   String
+  userId     String
+  seatNumber String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  flight    Flight    @relation(fields: [flightId], references: [id])
-  passenger Passenger @relation(fields: [passengerId], references: [id])
+  flight    Flight @relation(fields: [flightId], references: [id])
+  passenger User   @relation(fields: [userId], references: [id])
 
   @@map("bookings")
 }
@@ -52,9 +53,9 @@ model Booking {
 model Term {
   id        String   @id @default(uuid())
   title     String
-  content   String 
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@map("terms")
 }

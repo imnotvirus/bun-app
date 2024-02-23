@@ -1,13 +1,12 @@
 import { Elysia } from "elysia";
 import { flightRoutes } from "./routes/flights.routes";
 import swagger from "@elysiajs/swagger";
+import { authRoutes } from "./routes/auth.routes";
 
 const app = new Elysia()
-.use(swagger())
-.use(flightRoutes)  
-.get("/", () => ({
-    message: "Hello World!",
-  }))
+  .use(swagger())
+  .use(authRoutes)
+  .use(flightRoutes)
   .listen(3000);
 
 console.log(
