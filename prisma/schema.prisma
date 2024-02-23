@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Flight {
+  id          String   @id @default(uuid())
+  origin      String
+  destination String
+  departure   DateTime
+  airline     String
+  price       Float
+
+  bookings Booking[]
+
+  @@map("flights")
+}
+
+model Passenger {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings Booking[]
+
+  @@map("passengers")
+}
+
+model Booking {
+  id          String   @id @default(uuid())
+  flightId    String
+  passengerId String
+  seatNumber  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  flight    Flight    @relation(fields: [flightId], references: [id])
+  passenger Passenger @relation(fields: [passengerId], references: [id])
+
+  @@map("bookings")
+}
+
+model Term {
+  id        String   @id @default(uuid())
+  title     String
+  content   String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("terms")
+}
